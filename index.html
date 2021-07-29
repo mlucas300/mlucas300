@@ -49,10 +49,6 @@ Leaderboard
       vertical-align: baseline;
     }
 
-    .leaderboard ol {
-      counter-reset: leaderboard;
-    }
-
     .leaderboard ol li {
       position: relative;
       z-index: 1;
@@ -66,21 +62,6 @@ Leaderboard
       transform: translateZ(0) scale(1, 1);
     }
 
-    .leaderboard ol li::before {
-      content: counter(leaderboard);
-      position: absolute;
-      z-index: 2;
-      top: 15px;
-      left: 15px;
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-      color: #140e0e;
-      background: #fff;
-      border-radius: 20px;
-      text-align: center;
-    }
-
     .leaderboard ol li mark {
       position: absolute;
       z-index: 2;
@@ -92,6 +73,14 @@ Leaderboard
       margin: 0;
       background: none;
       color: #fff;
+    }
+
+    .leaderboard li {
+      font-weight: normal;
+      font-size: 1em;
+      -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+      -moz-box-shadow: 0 2px 2px -2px #0E1119;
+      box-shadow: 0 2px 2px -1px #0E1119;
     }
 
     .leaderboard ol li mark::before,
@@ -183,7 +172,7 @@ Leaderboard
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <div class="leaderboard">
+        <div class="leaderboard table-bordered">
           <h1>
             <svg class="ico-cup">
               <use xlink:href="#cup"></use>
