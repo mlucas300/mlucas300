@@ -1,3 +1,4 @@
+<!-- This software uses code and techniques learned from https://codepen.io/FRADAR/details/QWvPXwQ -->
 <HEAD>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -10,596 +11,85 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <style>
-    body {
-      min-height: 450px;
-      height: 100vh;
-      margin: 0;
-      background: -webkit-radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
-      background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
-      color: #fff;
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
-    }
-
-    .leaderboard {
-      position: fixed;
-      top: 50%;
-      margin-top: 120px;
-      left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-      width: 1280px;
-      background: -webkit-linear-gradient(top, #3a404d, #181c26);
-      background: linear-gradient(to bottom, #3a404d, #181c26);
-      border-radius: 1px;
-      box-shadow: 0 7px 30px rgb(62 9 11 / 30%);
-    }
-
-    .leaderboard h1 {
-      font-size: 18px;
-      color: #e1e1e1;
-      padding: 12px 13px 18px;
-    }
-
-    .leaderboard h1 svg {
-      width: 25px;
-      height: 26px;
-      position: relative;
-      top: 3px;
-      margin-right: 6px;
-      vertical-align: baseline;
-    }
-
-    .leaderboard ol li {
-      position: relative;
-      z-index: 1;
-      font-size: 14px;
-      counter-increment: leaderboard;
-      padding: 18px 10px 18px 50px;
-      cursor: pointer;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      -webkit-transform: translateZ(0) scale(1, 1);
-      transform: translateZ(0) scale(1, 1);
-    }
-
-    .leaderboard ol li mark {
-      position: absolute;
-      z-index: 2;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      padding: 18px 10px 18px 50px;
-      margin: 0;
-      background: none;
-      color: #fff;
-    }
-
-    .leaderboard li {
-      font-weight: normal;
-      font-size: 1em;
-      -webkit-box-shadow: 0 2px 2px -2px #0E1119;
-      -moz-box-shadow: 0 2px 2px -2px #0E1119;
-      box-shadow: 0 2px 2px -1px #0E1119;
-    }
-
-    .leaderboard ol li mark::before,
-    .leaderboard ol li mark::after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      bottom: -11px;
-      left: -9px;
-      border-top: 10px solid #221617;
-      border-left: 10px solid transparent;
-      -webkit-transition: all .1s ease-in-out;
-      transition: all .1s ease-in-out;
-      opacity: 0;
-    }
-
-    .leaderboard ol li mark::after {
-      left: auto;
-      right: -9px;
-      border-left: none;
-      border-right: 10px solid transparent;
-    }
-
-    .leaderboard ol li small {
-      position: relative;
-      z-index: 2;
-      display: block;
-      text-align: right;
-    }
-
-    .leaderboard ol li::after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #fa6855;
-      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
-      -webkit-transition: all .3s ease-in-out;
-      transition: all .3s ease-in-out;
-      opacity: 0;
-    }
-
-    .leaderboard ol li:hover {
-      z-index: 2;
-      overflow: visible;
-    }
-
-    .leaderboard ol li:hover::after {
-      opacity: 1;
-      -webkit-transform: scaleX(1.06) scaleY(1.03);
-      transform: scaleX(1.06) scaleY(1.03);
-    }
-
-    .leaderboard ol li:hover mark::before,
-    .leaderboard ol li:hover mark::after {
-      opacity: 1;
-      -webkit-transition: all .35s ease-in-out;
-      transition: all .35s ease-in-out;
-    }
-
-    p {
-      margin-left: 15px;
-      margin-right: 3px;
-    }
-
-    .text-standard {
-      margin-left: 15px;
-    }
-
-    .scroller {
-      height: 75%;
-      overflow-y: auto;
-      width: 70%;
-      overflow-x: hidden;
-    }
-
-    /* width */
-    ::-webkit-scrollbar {
-      width: 6px;
-      border-radius: 100px;
-
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 10px;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555;
-      border-radius: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/leaderboard.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
 
-<body style="background-image: url('img/banner.png'); overflow-y: hidden;">
-  <nav id="navbar-cage" class="navbar navbar-light bg-light">
-    <ul class="nav nav-pills" id="myTab" style="margin-left: 20px;">
-      <li class="nav-item">
-        <a class="nav-link active" href="#cage">Tab 1</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#leaderboard">Tab 2</a>
-      </li>
-    </ul>
-  </nav>
-
+<body style="overflow-y: hidden;">
   <br>
   <div class="text-center">
-    <img src="img/banner_transparent.png" />
+    <img src="images/banner_transparent.png" />
   </div>
 
   <div class="table-bordered leaderboard scroller" data-spy="scroll" data-target="#navbar-cage" data-offset="0">
     <div>
-      <h2 id="cage" class="section-heading text-uppercase text-standard">Heading 1</h2>
-      <p>
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-        To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-      </p>
-      <p>
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        .
-      </p>
-      <p>
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-      <h2 class="section-heading text-uppercase text-standard">Heading 2</h2>
-      <p>
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-        To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
+      <h1>
+        <svg class="ico-cup">
+          <use xlink:href="#cup"></use>
+        </svg>
+        Cyber Stars
+        <section>
 
-      </p>
-      <p>
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-      <p>
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-        To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
+        </section>
+      </h1>
 
-      </p>
-      <p>
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>
-        To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-
-      </p>
-      <h2 class="section-heading text-uppercase text-standard">Heading 3</h2>
-      <p>Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-      <div class="text-center" style="background-color: white; margin-left: 100px; margin-right: 100px;">
-        <img src="img/figure 1.png" />
-      </div>
-      <p>Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-      <p>Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.</p>
-      <p>Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-      <div class="text-center" style="background-color: white; margin-left: 100px; margin-right: 100px;">
-        <img src="img/figure 2.png" />
-      </div>
-      <p>Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-        To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-      </p>
-      <p>Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-      <p>Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-        To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-      </p>
-      <div class="text-center" style="background-color: white; margin-left: 100px; margin-right: 100px;">
-        <img src="img/figure 3.png" />
-      </div>
-      <h2 class="section-heading text-uppercase text-standard">Heading 4</h2>
-      <p>Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-      <p>To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.</p>
-      <h2 class="section-heading text-uppercase text-standard">Heading 5</h2>
-      <p>Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-      <p>To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>
-      <p>· Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-
-      <p>· To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-
-      <p>· Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-
-      <p>· Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-        Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.
-      </p>
-      <p>Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-      <p>To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-      <h2 class="section-heading text-uppercase text-standard">Heading 6</h2>
-      <p>Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the
-        embed code for the video you want to add. You can also type a keyword to search online for the video that best
-        fits your document.</p>
-      <h2 class="section-heading text-uppercase text-standard">Heading 7</h2>
-      <p>To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <p>Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-      <p>To make your document look professionally produced, Word provides header, footer, cover page, and text box
-        designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click
-        Insert and then choose the elements you want from the different galleries.
-        Themes and styles also help keep your document coordinated. When you click Design and choose a new Theme, the
-        pictures, charts, and SmartArt graphics change to match your new theme. When you apply styles, your headings
-        change to match the new theme.
-        Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-      </p>
-      <h2 class="section-heading text-uppercase text-standard">Heading 8</h2>
-      <p>Save time in Word with new buttons that show up where you need them. To change the way a picture fits in your
-        document, click it and a button for layout options appears next to it. When you work on a table, click where you
-        want to add a row or a column, and then click the plus sign.
-        Reading is easier, too, in the new Reading view. You can collapse parts of the document and focus on the text
-        you want. If you need to stop reading before you reach the end, Word remembers where you left off - even on
-        another device.
-      </p>
-    </div>
-    <div class="table-bordered">
-      <h2 id="leaderboard" class="section-heading text-uppercase text-standard">Some DashBoard</h2>
+      <!-- Header -->
       <div>
-        <h1>
-          <svg class="ico-cup">
-            <use xlink:href="#cup"></use>
-          </svg>
-          Heading 9
-        </h1>
-        <ol>
-          <li>
-            <mark>Jerry Wood</mark>
-            <small>315</small>
-          </li>
-          <li>
-            <mark>Brandon Barnes</mark>
-            <small>301</small>
-          </li>
-          <li>
-            <mark>Raymond Knight</mark>
-            <small>292</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>245</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>203</small>
-          </li>
-          <li>
-            <mark>Jerry Wood</mark>
-            <small>315</small>
-          </li>
-          <li>
-            <mark>Brandon Barnes</mark>
-            <small>301</small>
-          </li>
-          <li>
-            <mark>Raymond Knight</mark>
-            <small>292</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>245</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>203</small>
-          </li>
-		<li>
-            <mark>Raymond Knight</mark>
-            <small>292</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>245</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>203</small>
-          </li>
-          <li>
-            <mark>Jerry Wood</mark>
-            <small>315</small>
-          </li>
-          <li>
-            <mark>Brandon Barnes</mark>
-            <small>301</small>
-          </li>
-          <li>
-            <mark>Raymond Knight</mark>
-            <small>292</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>245</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>203</small>
-          </li>
-		<li>
-            <mark>Raymond Knight</mark>
-            <small>292</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>245</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>203</small>
-          </li>
-          <li>
-            <mark>Jerry Wood</mark>
-            <small>315</small>
-          </li>
-          <li>
-            <mark>Brandon Barnes</mark>
-            <small>301</small>
-          </li>
-          <li>
-            <mark>Raymond Knight</mark>
-            <small>292</small>
-          </li>
-          <li>
-            <mark>Trevor McCormick</mark>
-            <small>245</small>
-          </li>
-          <li>
-            <mark>Andrew Fox</mark>
-            <small>203</small>
-          </li>
-        </ol>
+        <table class="table table-dark table-striped table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>Name</th>
+              <th>AVG Reward</th>
+              <th>Agent Name</th>
+            </tr>
+          </thead>
+
+          <tr>
+            <td>Jerry Wood</td>
+            <td>315</td>
+            <td>Agent 1</td>
+          </tr>
+          <tr>
+            <td>Brandon Barnes</td>
+            <td>301</td>
+            <td>Agent 315</td>
+          </tr>
+          <tr>
+            <td>Raymond Knight</td>
+            <td>292</td>
+            <td>Agent 31</td>
+          </tr>
+          <tr>
+            <td>Jerry Wood</td>
+            <td>315</td>
+            <td>Agent 5</td>
+          </tr>
+          <tr>
+            <td>Brandon Barnes</td>
+            <td>301</td>
+            <td>Agent 55</td>
+          </tr>
+          <tr>
+            <td>Raymond Knight</td>
+            <td>292</td>
+            <td>Agent 15</td>
+          </tr>
+          <tr>
+            <td>Jerry Wood</td>
+            <td>315</td>
+            <td>Agent 3</td>
+          </tr>
+          <tr>
+            <td>Brandon Barnes</td>
+            <td>301</td>
+            <td>Agent 35</td>
+          </tr>
+          <tr>
+            <td>Raymond Knight</td>
+            <td>292</td>
+            <td>Agent 12</td>
+          </tr>
+        </table>
       </div>
     </div>
 
@@ -625,7 +115,5 @@
 	c0-1.097,0.908-1.99,2.024-1.99c1.117,0,2.025,0.893,2.025,1.99C23.241,6.246,22.333,7.138,21.215,7.138z" />
       </symbol>
     </svg>
-
 </body>
-
 </html>
